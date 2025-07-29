@@ -1,98 +1,384 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Скидання паролю</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <style>
-    body { font-family: sans-serif; max-width: 400px; margin: 40px auto; padding: 20px; }
-    input, button { width: 100%; margin-top: 10px; padding: 10px; }
-    #status { margin-top: 20px; color: green; }
-    #error { margin-top: 20px; color: red; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories.ai - Password Reset</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1E0B37 0%, #2D1B69 50%, #1E0B37 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #8B5CF6, #A855F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .input-group {
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #fff;
+        }
+        
+        .input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input:focus {
+            border-color: #8B5CF6;
+        }
+        
+        .input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .button {
+            background: linear-gradient(45deg, #8B5CF6, #A855F7);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #8B5CF6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .password-requirements {
+            font-size: 12px;
+            color: #ccc;
+            margin-top: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
-  <h2>Скидання паролю</h2>
+    <div class="container">
+        <div class="logo">Stories.ai</div>
+        
+        <div id="form" class="form">
+            <div class="title">Reset Password</div>
+            <div class="subtitle">Enter your new password below</div>
+            
+            <div class="input-group">
+                <label for="password">New Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="input" 
+                    placeholder="Enter new password"
+                    minlength="6"
+                >
+                <div class="password-requirements">Password must be at least 6 characters</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    class="input" 
+                    placeholder="Confirm new password"
+                    minlength="6"
+                >
+            </div>
+            
+            <button id="submitBtn" class="button" onclick="resetPassword()">
+                Reset Password
+            </button>
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <div class="subtitle">Updating password...</div>
+        </div>
+        
+        <div id="error" class="error" style="display: none;">
+            <div class="title">Error</div>
+            <div class="subtitle" id="errorMessage">Something went wrong</div>
+            <button class="button" onclick="showForm()">Try Again</button>
+        </div>
+        
+        <div id="success" class="success" style="display: none;">
+            <div class="title">Success!</div>
+            <div class="subtitle">Your password has been updated successfully</div>
+            <button class="button" onclick="openApp()">Open App</button>
+        </div>
+    </div>
 
-  <form id="reset-form" style="display: none;">
-    <input type="password" id="new-password" placeholder="Новий пароль" required />
-    <button type="submit">Зберегти пароль</button>
-  </form>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        // Global variables
+        let supabase = null;
+        
+        // Supabase configuration
+        const supabaseUrl = 'https://lkidcfdazjdhtykxiafp.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxraWRjZmRhempkaHR5a3hpYWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MTAzMzEsImV4cCI6MjA2OTM4NjMzMX0.PA_4fAgYn2TV3_-DkmNFFRDYYRDCggeIPMWxphSlT70';
 
-  <div id="status"></div>
-  <div id="error"></div>
-
-  <script>
-    const supabase = supabase.createClient(
-      "https://lkidcfdazjdhtykxiafp.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxraWRjZmRhempkaHR5a3hpYWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MTAzMzEsImV4cCI6MjA2OTM4NjMzMX0.PA_4fAgYn2TV3_-DkmNFFRDYYRDCggeIPMWxphSlT70" // 🔁 замініть на свій
-    );
-
-    const form = document.getElementById("reset-form");
-    const passwordInput = document.getElementById("new-password");
-    const statusEl = document.getElementById("status");
-    const errorEl = document.getElementById("error");
-
-    function parseParams(str) {
-      const p = {};
-      const searchParams = new URLSearchParams(str.replace(/^#/, '').replace(/^\?/, ''));
-      for (const [key, value] of searchParams.entries()) {
-        p[key] = value;
-      }
-      return p;
-    }
-
-    async function main() {
-      const hashParams = parseParams(window.location.hash);
-      const searchParams = parseParams(window.location.search);
-
-      let sessionSet = false;
-
-      if (hashParams.access_token && hashParams.refresh_token) {
-        const { error } = await supabase.auth.setSession({
-          access_token: hashParams.access_token,
-          refresh_token: hashParams.refresh_token,
-        });
-        if (error) {
-          errorEl.textContent = "Помилка входу: " + error.message;
-          return;
+        // Get URL parameters
+        function getUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                access_token: urlParams.get('access_token'),
+                refresh_token: urlParams.get('refresh_token'),
+                type: urlParams.get('type')
+            };
         }
-        sessionSet = true;
-      } else if (searchParams.token && searchParams.type === "recovery") {
-        const { data, error } = await supabase.auth.verifyOtp({
-          token: searchParams.token,
-          type: "recovery",
-        });
-        if (error) {
-          errorEl.textContent = "Помилка перевірки: " + error.message;
-          return;
+
+        // Show form
+        function showForm() {
+            document.getElementById('form').style.display = 'flex';
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('success').style.display = 'none';
         }
-        sessionSet = true;
-      }
 
-      if (sessionSet) {
-        form.style.display = "block";
-        statusEl.textContent = "Введіть новий пароль";
-      } else {
-        errorEl.textContent = "Не знайдено токену для скидання паролю.";
-      }
-    }
+        // Show loading
+        function showLoading() {
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('success').style.display = 'none';
+        }
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const newPassword = passwordInput.value;
-      const { error } = await supabase.auth.updateUser({ password: newPassword });
-      if (error) {
-        errorEl.textContent = "Не вдалося оновити пароль: " + error.message;
-      } else {
-        statusEl.textContent = "Пароль успішно оновлено!";
-        errorEl.textContent = "";
-        form.reset();
-        form.style.display = "none";
-      }
-    });
+        // Show error
+        function showError(message) {
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('success').style.display = 'none';
+            document.getElementById('errorMessage').textContent = message;
+        }
 
-    main();
-  </script>
+        // Show success
+        function showSuccess() {
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+        }
+
+        // Open app
+        function openApp() {
+            window.location.href = 'stories.ai://';
+        }
+
+        // Reset password function
+        async function resetPassword() {
+            if (!supabase) {
+                showError('Supabase client not initialized. Please refresh the page.');
+                return;
+            }
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const params = getUrlParams();
+
+            // Validation
+            if (!password || !confirmPassword) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+
+            if (!params.access_token || !params.refresh_token || params.type !== 'recovery') {
+                showError('Invalid or expired reset link. Please request a new one.');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Set session with tokens
+                const { error: sessionError } = await supabase.auth.setSession({
+                    access_token: params.access_token,
+                    refresh_token: params.refresh_token,
+                });
+
+                if (sessionError) {
+                    throw sessionError;
+                }
+
+                // Update password
+                const { error: updateError } = await supabase.auth.updateUser({
+                    password: password
+                });
+
+                if (updateError) {
+                    throw updateError;
+                }
+
+                showSuccess();
+            } catch (error) {
+                console.error('Error resetting password:', error);
+                
+                // Handle specific errors
+                if (error.message && error.message.includes('WebCrypto')) {
+                    showError('Your browser is not fully supported. Please try using a modern browser like Chrome, Firefox, or Safari.');
+                } else {
+                    showError(error.message || 'Failed to reset password. Please try again.');
+                }
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for Supabase script to load
+            if (typeof window.supabase === 'undefined') {
+                showError('Failed to load Supabase. Please check your internet connection and refresh the page.');
+                return;
+            }
+
+            // Create Supabase client
+            try {
+                supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+                    auth: {
+                        flowType: 'pkce',
+                        autoRefreshToken: true,
+                        persistSession: false,
+                        detectSessionInUrl: false
+                    }
+                });
+            } catch (error) {
+                console.error('Error creating Supabase client:', error);
+                showError('Failed to initialize authentication. Please refresh the page.');
+                return;
+            }
+
+            // Check if we have valid tokens
+            const params = getUrlParams();
+            
+            if (!params.access_token || !params.refresh_token || params.type !== 'recovery') {
+                showError('Invalid or expired password reset link. Please request a new one.');
+                return;
+            }
+        });
+
+        // Enter key to submit
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                resetPassword();
+            }
+        });
+    </script>
 </body>
-</html>
+</html> 
