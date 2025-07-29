@@ -1,492 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - Stories.ai</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1E0B37 0%, #2D1B69 50%, #1E0B37 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            padding: 20px;
-        }
-        
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #8B5CF6, #A855F7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .title {
-            font-size: 24px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            color: #ccc;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .input-group {
-            text-align: left;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #fff;
-        }
-        
-        .input {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        .input:focus {
-            border-color: #8B5CF6;
-        }
-        
-        .input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .button {
-            background: linear-gradient(45deg, #8B5CF6, #A855F7);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px 32px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-        
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
-        }
-        
-        .button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .success {
-            background: rgba(34, 197, 94, 0.2);
-            border: 1px solid rgba(34, 197, 94, 0.5);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #8B5CF6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .password-requirements {
-            font-size: 12px;
-            color: #ccc;
-            margin-top: 8px;
-            text-align: left;
-        }
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
 
-        .debug {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 20px;
-            font-size: 12px;
-            text-align: left;
-            word-break: break-all;
-        }
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/12.0.0/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/12.0.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/12.0.0/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
-        .redirect-notice {
-            background: rgba(255, 193, 7, 0.2);
-            border: 1px solid rgba(255, 193, 7, 0.5);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="logo">Stories.ai</div>
-        
-        <div id="form" class="form">
-            <div class="title">Reset Password</div>
-            <div class="subtitle">Enter your new password below</div>
-            
-            <div class="input-group">
-                <label for="password">New Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    class="input" 
-                    placeholder="Enter new password"
-                    minlength="6"
-                >
-                <div class="password-requirements">Password must be at least 6 characters</div>
-            </div>
-            
-            <div class="input-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input 
-                    type="password" 
-                    id="confirmPassword" 
-                    class="input" 
-                    placeholder="Confirm new password"
-                    minlength="6"
-                >
-            </div>
-            
-            <button id="submitBtn" class="button" onclick="resetPassword()">
-                Reset Password
-            </button>
-        </div>
-        
-        <div id="loading" class="loading" style="display: none;">
-            <div class="spinner"></div>
-            <div class="subtitle">Updating password...</div>
-        </div>
-        
-        <div id="error" class="error" style="display: none;">
-            <div class="title">Error</div>
-            <div class="subtitle" id="errorMessage">Something went wrong</div>
-            <button class="button" onclick="showForm()">Try Again</button>
-        </div>
-
-        <div id="success" class="success" style="display: none;">
-            <div class="title">Success!</div>
-            <div class="subtitle">Your password has been updated successfully</div>
-            <button class="button" onclick="openApp()">Open App</button>
-        </div>
-
-        <div id="redirect" class="redirect-notice" style="display: none;">
-            <div class="title">Opening in Browser</div>
-            <div class="subtitle">This page needs to be opened in a browser to work properly.</div>
-            <button class="button" onclick="openInBrowser()">Open in Browser</button>
-        </div>
-
-        <!-- Debug info -->
-        <div id="debug" class="debug" style="display: none;">
-            <strong>Debug Info:</strong><br>
-            <div id="debugContent"></div>
-        </div>
+  </head>
+  <body>
+    <div id="message">
+      <h2>Welcome</h2>
+      <h1>Firebase Hosting Setup Complete</h1>
+      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
+      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
     </div>
+    <p id="load">Firebase SDK Loading&hellip;</p>
 
     <script>
-        // Check if we're in a restricted environment
-        function checkEnvironment() {
-            const url = window.location.href;
-            const isRestricted = url.includes('about:srcdoc') || 
-                               url.includes('blob:') || 
-                               window.parent !== window;
-            
-            if (isRestricted) {
-                showRedirectNotice();
-                return false;
-            }
-            return true;
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadEl = document.querySelector('#load');
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          let app = firebase.app();
+          let features = [
+            'auth', 
+            'database', 
+            'firestore',
+            'functions',
+            'messaging', 
+            'storage', 
+            'analytics', 
+            'remoteConfig',
+            'performance',
+          ].filter(feature => typeof app[feature] === 'function');
+          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
         }
-
-        // Show redirect notice for restricted environments
-        function showRedirectNotice() {
-            document.getElementById('form').style.display = 'none';
-            document.getElementById('redirect').style.display = 'block';
-        }
-
-        // Open in browser
-        function openInBrowser() {
-            // Try to construct the proper URL with current parameters
-            const currentParams = getAllUrlParams();
-            const baseUrl = 'https://mishagithub9.github.io/password-reset.html';
-            
-            let urlWithParams = baseUrl;
-            if (Object.keys(currentParams).length > 0) {
-                const params = new URLSearchParams(currentParams);
-                urlWithParams += '?' + params.toString();
-            }
-            
-            // Try multiple methods to open in browser
-            if (window.open) {
-                window.open(urlWithParams, '_blank');
-            } else {
-                window.location.href = urlWithParams;
-            }
-        }
-
-        // Get URL parameters from all possible sources
-        function getAllUrlParams() {
-            const params = {};
-            
-            // Check current URL (even if it's about:srcdoc)
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                const hashParams = new URLSearchParams(window.location.hash.substring(1));
-                
-                // Merge all parameters
-                for (const [key, value] of urlParams) {
-                    params[key] = value;
-                }
-                for (const [key, value] of hashParams) {
-                    params[key] = value;
-                }
-            } catch (e) {
-                console.error('Error parsing URL params:', e);
-            }
-            
-            // Try to get from parent window if in iframe
-            try {
-                if (window.parent && window.parent !== window) {
-                    const parentUrl = window.parent.location.href;
-                    const parentParams = new URLSearchParams(parentUrl.split('?')[1] || '');
-                    for (const [key, value] of parentParams) {
-                        if (!params[key]) params[key] = value;
-                    }
-                }
-            } catch (e) {
-                // Ignore cross-origin errors
-            }
-            
-            return params;
-        }
-
-        // Get URL parameters (fallback version)
-        function getUrlParams() {
-            return getAllUrlParams();
-        }
-
-        // Show debug info
-        function showDebug(params) {
-            const debugEl = document.getElementById('debug');
-            const debugContent = document.getElementById('debugContent');
-            
-            debugContent.innerHTML = `
-                URL: ${window.location.href}<br>
-                Origin: ${window.location.origin}<br>
-                Search: ${window.location.search}<br>
-                Hash: ${window.location.hash}<br>
-                Is iframe: ${window.parent !== window}<br>
-                Access Token: ${params.access_token ? 'Present (' + params.access_token.substring(0, 20) + '...)' : 'Missing'}<br>
-                Refresh Token: ${params.refresh_token ? 'Present (' + params.refresh_token.substring(0, 20) + '...)' : 'Missing'}<br>
-                Type: ${params.type || 'Missing'}<br>
-                User Agent: ${navigator.userAgent}
-            `;
-            
-            debugEl.style.display = 'block';
-        }
-
-        // Show form
-        function showForm() {
-            document.getElementById('form').style.display = 'flex';
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'none';
-            document.getElementById('success').style.display = 'none';
-            document.getElementById('redirect').style.display = 'none';
-        }
-
-        // Show loading
-        function showLoading() {
-            document.getElementById('form').style.display = 'none';
-            document.getElementById('loading').style.display = 'flex';
-            document.getElementById('error').style.display = 'none';
-            document.getElementById('success').style.display = 'none';
-            document.getElementById('redirect').style.display = 'none';
-        }
-
-        // Show error
-        function showError(message) {
-            document.getElementById('form').style.display = 'none';
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'block';
-            document.getElementById('success').style.display = 'none';
-            document.getElementById('redirect').style.display = 'none';
-            document.getElementById('errorMessage').textContent = message;
-        }
-
-        // Show success
-        function showSuccess() {
-            document.getElementById('form').style.display = 'none';
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'none';
-            document.getElementById('success').style.display = 'block';
-            document.getElementById('redirect').style.display = 'none';
-        }
-
-        // Open app
-        function openApp() {
-            window.location.href = 'stories.ai://';
-        }
-
-        // Manual API call to Supabase (without SDK)
-        async function makeSupabaseRequest(endpoint, method, headers, body) {
-            const url = `https://lkidcfdazjdhtykxiafp.supabase.co${endpoint}`;
-            
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxraWRjZmRhempkaHR5a3hpYWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MTAzMzEsImV4cCI6MjA2OTM4NjMzMX0.PA_4fAgYn2TV3_-DkmNFFRDYYRDCggeIPMWxphSlT70',
-                    ...headers
-                },
-                body: body ? JSON.stringify(body) : undefined
-            });
-
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.message || `HTTP ${response.status}`);
-            }
-            
-            return data;
-        }
-
-        // Reset password function
-        async function resetPassword() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const params = getUrlParams();
-
-            // Show debug info
-            showDebug(params);
-
-            // Validation
-            if (!password || !confirmPassword) {
-                showError('Please fill in all fields');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
-
-            if (!params.access_token || !params.refresh_token) {
-                showError('Invalid or expired reset link. Please request a new one.');
-                return;
-            }
-
-            showLoading();
-
-            try {
-                // Update password using direct API call
-                await makeSupabaseRequest('/auth/v1/user', 'PUT', {
-                    'Authorization': `Bearer ${params.access_token}`
-                }, {
-                    password: password
-                });
-
-                showSuccess();
-            } catch (error) {
-                console.error('Error resetting password:', error);
-                
-                if (error.message.includes('Invalid') || error.message.includes('expired')) {
-                    showError('Reset link has expired. Please request a new one.');
-                } else {
-                    showError(error.message || 'Failed to reset password. Please try again.');
-                }
-            }
-        }
-
-        // Initialize page
-        function initializePage() {
-            if (!checkEnvironment()) {
-                return; // Environment check failed, showing redirect notice
-            }
-            
-            const params = getUrlParams();
-            showDebug(params);
-        }
-
-        // Page load handler
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initializePage, 100);
-        });
-
-        // Enter key to submit
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                resetPassword();
-            }
-        });
+      });
     </script>
-</body>
+  </body>
 </html>
