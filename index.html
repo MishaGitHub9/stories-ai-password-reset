@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stories.ai - Password Reset</title>
+    <title>Stories.ai - Відновлення пароля</title>
     <style>
         * {
             margin: 0;
@@ -13,88 +13,140 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1E0B37 0%, #2D1B69 50%, #1E0B37 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #333;
             padding: 20px;
         }
         
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
             padding: 40px;
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .logo {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #8B5CF6, #A855F7);
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
         .title {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 10px;
-            font-weight: 600;
+            font-weight: 700;
+            color: #2d3748;
         }
         
         .subtitle {
             font-size: 16px;
-            color: #ccc;
-            margin-bottom: 30px;
-            line-height: 1.5;
+            color: #718096;
+            margin-bottom: 40px;
+            line-height: 1.6;
         }
         
         .form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
         }
         
         .input-group {
             text-align: left;
+            position: relative;
         }
         
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
-            color: #fff;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+        
+        .input-wrapper {
+            position: relative;
         }
         
         .input {
             width: 100%;
-            padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #f7fafc;
+            color: #2d3748;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
         
         .input:focus {
-            border-color: #8B5CF6;
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         .input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: #a0aec0;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #a0aec0;
+            font-size: 18px;
+            padding: 4px;
+        }
+        
+        .password-toggle:hover {
+            color: #667eea;
+        }
+        
+        .password-strength {
+            margin-top: 8px;
+            display: flex;
+            gap: 4px;
+        }
+        
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .strength-bar.weak { background: #fc8181; }
+        .strength-bar.medium { background: #f6ad55; }
+        .strength-bar.strong { background: #68d391; }
+        
+        .strength-text {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
         }
         
         .button {
-            background: linear-gradient(45deg, #8B5CF6, #A855F7);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
             border-radius: 12px;
@@ -104,11 +156,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            font-family: inherit;
         }
         
         .button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
         
         .button:disabled {
@@ -118,19 +171,21 @@
         }
         
         .error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
             border-radius: 12px;
             padding: 20px;
             margin-top: 20px;
+            color: #c53030;
         }
         
         .success {
-            background: rgba(34, 197, 94, 0.2);
-            border: 1px solid rgba(34, 197, 94, 0.5);
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
             border-radius: 12px;
             padding: 20px;
             margin-top: 20px;
+            color: #22543d;
         }
         
         .loading {
@@ -143,8 +198,8 @@
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #8B5CF6;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -154,11 +209,34 @@
             100% { transform: rotate(360deg); }
         }
         
-        .password-requirements {
+        .requirements {
             font-size: 12px;
-            color: #ccc;
+            color: #718096;
             margin-top: 8px;
             text-align: left;
+        }
+        
+        .app-button {
+            background: #2d3748;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            font-family: inherit;
+        }
+        
+        .app-button:hover {
+            background: #4a5568;
+            transform: translateY(-1px);
+        }
+        
+        .icon {
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -167,52 +245,71 @@
         <div class="logo">Stories.ai</div>
         
         <div id="form" class="form">
-            <div class="title">Reset Password</div>
-            <div class="subtitle">Enter your new password below</div>
+            <div class="title">Відновлення пароля</div>
+            <div class="subtitle">Введіть новий пароль для вашого акаунту</div>
             
             <div class="input-group">
-                <label for="password">New Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    class="input" 
-                    placeholder="Enter new password"
-                    minlength="6"
-                >
-                <div class="password-requirements">Password must be at least 6 characters</div>
+                <label for="password">Новий пароль</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="input" 
+                        placeholder="Введіть новий пароль"
+                        minlength="6"
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                        👁️
+                    </button>
+                </div>
+                <div class="password-strength" id="strength-bars">
+                    <div class="strength-bar"></div>
+                    <div class="strength-bar"></div>
+                    <div class="strength-bar"></div>
+                    <div class="strength-bar"></div>
+                </div>
+                <div class="strength-text" id="strength-text">Введіть пароль</div>
+                <div class="requirements">Мінімум 6 символів</div>
             </div>
             
             <div class="input-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input 
-                    type="password" 
-                    id="confirmPassword" 
-                    class="input" 
-                    placeholder="Confirm new password"
-                    minlength="6"
-                >
+                <label for="confirmPassword">Підтвердження пароля</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        class="input" 
+                        placeholder="Повторіть новий пароль"
+                        minlength="6"
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                        👁️
+                    </button>
+                </div>
             </div>
             
             <button id="submitBtn" class="button" onclick="resetPassword()">
-                Reset Password
+                Оновити пароль
             </button>
         </div>
         
         <div id="loading" class="loading" style="display: none;">
             <div class="spinner"></div>
-            <div class="subtitle">Updating password...</div>
+            <div class="subtitle">Оновлення пароля...</div>
         </div>
         
         <div id="error" class="error" style="display: none;">
-            <div class="title">Error</div>
-            <div class="subtitle" id="errorMessage">Something went wrong</div>
-            <button class="button" onclick="showForm()">Try Again</button>
+            <div class="title">Помилка</div>
+            <div class="subtitle" id="errorMessage">Щось пішло не так</div>
+            <button class="button" onclick="showForm()">Спробувати знову</button>
         </div>
         
         <div id="success" class="success" style="display: none;">
-            <div class="title">Success!</div>
-            <div class="subtitle">Your password has been updated successfully</div>
-            <button class="button" onclick="openApp()">Open App</button>
+            <div class="title">Успішно!</div>
+            <div class="subtitle">Ваш пароль було успішно оновлено</div>
+            <button class="app-button" onclick="openApp()">
+                <span class="icon">📱</span>Відкрити додаток
+            </button>
         </div>
     </div>
 
@@ -225,19 +322,69 @@
         const supabaseUrl = 'https://lkidcfdazjdhtykxiafp.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxraWRjZmRhempkaHR5a3hpYWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MTAzMzEsImV4cCI6MjA2OTM4NjMzMX0.PA_4fAgYn2TV3_-DkmNFFRDYYRDCggeIPMWxphSlT70';
 
-        // Get URL parameters from both query string and hash
+        // Get URL parameters
         function getUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
-            const hashParams = new URLSearchParams(window.location.hash.substring(1));
-            
-            // Try query parameters first, then hash parameters
             return {
-                code: urlParams.get('code') || hashParams.get('code') || urlParams.get('token') || hashParams.get('token'),
-                type: urlParams.get('type') || hashParams.get('type'),
-                // Also check for access_token and refresh_token in case they're being used
-                access_token: urlParams.get('access_token') || hashParams.get('access_token'),
-                refresh_token: urlParams.get('refresh_token') || hashParams.get('refresh_token')
+                access_token: urlParams.get('access_token'),
+                refresh_token: urlParams.get('refresh_token'),
+                type: urlParams.get('type')
             };
+        }
+
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        // Check password strength
+        function checkPasswordStrength(password) {
+            const bars = document.querySelectorAll('.strength-bar');
+            const text = document.getElementById('strength-text');
+            
+            // Reset all bars
+            bars.forEach(bar => {
+                bar.className = 'strength-bar';
+            });
+            
+            if (!password) {
+                text.textContent = 'Введіть пароль';
+                return;
+            }
+            
+            let strength = 0;
+            let feedback = '';
+            
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            // Update bars
+            for (let i = 0; i < strength && i < 4; i++) {
+                if (strength <= 2) {
+                    bars[i].classList.add('weak');
+                    feedback = 'Слабкий пароль';
+                } else if (strength <= 3) {
+                    bars[i].classList.add('medium');
+                    feedback = 'Середній пароль';
+                } else {
+                    bars[i].classList.add('strong');
+                    feedback = 'Сильний пароль';
+                }
+            }
+            
+            text.textContent = feedback;
         }
 
         // Show form
@@ -281,7 +428,7 @@
         // Reset password function
         async function resetPassword() {
             if (!supabase) {
-                showError('Supabase client not initialized. Please refresh the page.');
+                showError('Помилка ініціалізації. Будь ласка, оновіть сторінку.');
                 return;
             }
 
@@ -291,45 +438,36 @@
 
             // Validation
             if (!password || !confirmPassword) {
-                showError('Please fill in all fields');
+                showError('Будь ласка, заповніть всі поля');
                 return;
             }
 
             if (password !== confirmPassword) {
-                showError('Passwords do not match');
+                showError('Паролі не збігаються');
                 return;
             }
 
             if (password.length < 6) {
-                showError('Password must be at least 6 characters');
+                showError('Пароль повинен містити мінімум 6 символів');
                 return;
             }
 
-            if (!params.code || params.type !== 'recovery') {
-                showError('Invalid or expired reset link. Please request a new one.');
+            if (!params.access_token || !params.refresh_token || params.type !== 'recovery') {
+                showError('Недійсне або застаріле посилання для відновлення. Запишіть нове.');
                 return;
             }
 
             showLoading();
 
             try {
-                let sessionData = null;
-                
-                // Try different authentication methods based on available parameters
-                if (params.access_token && params.refresh_token) {
-                    // Use the old setSession method if we have tokens
-                    const { error: sessionError } = await supabase.auth.setSession({
-                        access_token: params.access_token,
-                        refresh_token: params.refresh_token,
-                    });
-                    if (sessionError) throw sessionError;
-                } else if (params.code) {
-                    // Use exchangeCodeForSession if we have a code
-                    const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(params.code);
-                    if (exchangeError) throw exchangeError;
-                    sessionData = data;
-                } else {
-                    throw new Error('No valid authentication parameters found');
+                // Set session with tokens
+                const { error: sessionError } = await supabase.auth.setSession({
+                    access_token: params.access_token,
+                    refresh_token: params.refresh_token,
+                });
+
+                if (sessionError) {
+                    throw sessionError;
                 }
 
                 // Update password
@@ -346,14 +484,12 @@
                 console.error('Error resetting password:', error);
                 
                 // Handle specific errors
-                if (error.message && error.message.includes('expired')) {
-                    showError('Password reset link has expired. Please request a new one.');
+                if (error.message && error.message.includes('WebCrypto')) {
+                    showError('Ваш браузер не повністю підтримується. Спробуйте використати сучасний браузер як Chrome, Firefox або Safari.');
                 } else if (error.message && error.message.includes('invalid')) {
-                    showError('Invalid reset link. Please request a new one.');
-                } else if (error.message && error.message.includes('WebCrypto')) {
-                    showError('Your browser is not fully supported. Please try using a modern browser like Chrome, Firefox, or Safari.');
+                    showError('Недійсне або застаріле посилання для відновлення. Запишіть нове.');
                 } else {
-                    showError(error.message || 'Failed to reset password. Please try again.');
+                    showError(error.message || 'Не вдалося оновити пароль. Спробуйте ще раз.');
                 }
             }
         }
@@ -362,7 +498,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Wait for Supabase script to load
             if (typeof window.supabase === 'undefined') {
-                showError('Failed to load Supabase. Please check your internet connection and refresh the page.');
+                showError('Не вдалося завантажити Supabase. Перевірте підключення до інтернету та оновіть сторінку.');
                 return;
             }
 
@@ -378,27 +514,22 @@
                 });
             } catch (error) {
                 console.error('Error creating Supabase client:', error);
-                showError('Failed to initialize authentication. Please refresh the page.');
+                showError('Не вдалося ініціалізувати автентифікацію. Оновіть сторінку.');
                 return;
             }
 
-            // Debug: Check what parameters we have
+            // Check if we have valid tokens
             const params = getUrlParams();
-            const allParams = new URLSearchParams(window.location.search);
-            const debugInfo = [];
             
-            for (const [key, value] of allParams.entries()) {
-                debugInfo.push(`${key}: ${value}`);
-            }
-            
-            console.log('URL Parameters:', debugInfo);
-            console.log('Current URL:', window.location.href);
-            
-            if (!params.code && !params.access_token) {
-                const errorMsg = `Invalid or expired password reset link. Debug info - Code: ${params.code || 'missing'}, Access Token: ${params.access_token || 'missing'}, Type: ${params.type || 'missing'}. All params: ${debugInfo.join(', ')}`;
-                showError(errorMsg);
+            if (!params.access_token || !params.refresh_token || params.type !== 'recovery') {
+                showError('Недійсне або застаріле посилання для відновлення пароля. Запишіть нове.');
                 return;
             }
+
+            // Add password strength checker
+            document.getElementById('password').addEventListener('input', function() {
+                checkPasswordStrength(this.value);
+            });
         });
 
         // Enter key to submit
