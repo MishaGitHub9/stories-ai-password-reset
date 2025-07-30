@@ -229,8 +229,7 @@
         function getUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
-                access_token: urlParams.get('access_token'),
-                refresh_token: urlParams.get('refresh_token'),
+                code: urlParams.get('code'),
                 type: urlParams.get('type')
             };
         }
@@ -300,7 +299,7 @@
                 return;
             }
 
-            if (!params.access_token || !params.refresh_token || params.type !== 'recovery') {
+            if (!params.code || params.type !== 'recovery') {
                 showError('Invalid or expired reset link. Please request a new one.');
                 return;
             }
@@ -308,14 +307,11 @@
             showLoading();
 
             try {
-                // Set session with tokens
-                const { error: sessionError } = await supabase.auth.setSession({
-                    access_token: params.access_token,
-                    refresh_token: params.refresh_token,
-                });
+                // Exchange the code for a session
+                const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(params.code);
 
-                if (sessionError) {
-                    throw sessionError;
+                if (exchangeError) {
+                    throw exchangeError;
                 }
 
                 // Update password
@@ -332,7 +328,11 @@
                 console.error('Error resetting password:', error);
                 
                 // Handle specific errors
-                if (error.message && error.message.includes('WebCrypto')) {
+                if (error.message && error.message.includes('expired')) {
+                    showError('Password reset link has expired. Please request a new one.');
+                } else if (error.message && error.message.includes('invalid')) {
+                    showError('Invalid reset link. Please request a new one.');
+                } else if (error.message && error.message.includes('WebCrypto')) {
                     showError('Your browser is not fully supported. Please try using a modern browser like Chrome, Firefox, or Safari.');
                 } else {
                     showError(error.message || 'Failed to reset password. Please try again.');
@@ -364,10 +364,10 @@
                 return;
             }
 
-            // Check if we have valid tokens
+            // Check if we have valid parameters
             const params = getUrlParams();
             
-            if (!params.access_token || !params.refresh_token || params.type !== 'recovery') {
+            if (!params.code || params.type !== 'recovery') {
                 showError('Invalid or expired password reset link. Please request a new one.');
                 return;
             }
@@ -381,4 +381,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
