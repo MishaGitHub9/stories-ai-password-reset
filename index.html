@@ -225,12 +225,18 @@
         const supabaseUrl = 'https://lkidcfdazjdhtykxiafp.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxraWRjZmRhempkaHR5a3hpYWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MTAzMzEsImV4cCI6MjA2OTM4NjMzMX0.PA_4fAgYn2TV3_-DkmNFFRDYYRDCggeIPMWxphSlT70';
 
-        // Get URL parameters
+        // Get URL parameters from both query string and hash
         function getUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            
+            // Try query parameters first, then hash parameters
             return {
-                code: urlParams.get('code'),
-                type: urlParams.get('type')
+                code: urlParams.get('code') || hashParams.get('code') || urlParams.get('token') || hashParams.get('token'),
+                type: urlParams.get('type') || hashParams.get('type'),
+                // Also check for access_token and refresh_token in case they're being used
+                access_token: urlParams.get('access_token') || hashParams.get('access_token'),
+                refresh_token: urlParams.get('refresh_token') || hashParams.get('refresh_token')
             };
         }
 
@@ -307,11 +313,23 @@
             showLoading();
 
             try {
-                // Exchange the code for a session
-                const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(params.code);
-
-                if (exchangeError) {
-                    throw exchangeError;
+                let sessionData = null;
+                
+                // Try different authentication methods based on available parameters
+                if (params.access_token && params.refresh_token) {
+                    // Use the old setSession method if we have tokens
+                    const { error: sessionError } = await supabase.auth.setSession({
+                        access_token: params.access_token,
+                        refresh_token: params.refresh_token,
+                    });
+                    if (sessionError) throw sessionError;
+                } else if (params.code) {
+                    // Use exchangeCodeForSession if we have a code
+                    const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(params.code);
+                    if (exchangeError) throw exchangeError;
+                    sessionData = data;
+                } else {
+                    throw new Error('No valid authentication parameters found');
                 }
 
                 // Update password
@@ -364,11 +382,21 @@
                 return;
             }
 
-            // Check if we have valid parameters
+            // Debug: Check what parameters we have
             const params = getUrlParams();
+            const allParams = new URLSearchParams(window.location.search);
+            const debugInfo = [];
             
-            if (!params.code || params.type !== 'recovery') {
-                showError('Invalid or expired password reset link. Please request a new one.');
+            for (const [key, value] of allParams.entries()) {
+                debugInfo.push(`${key}: ${value}`);
+            }
+            
+            console.log('URL Parameters:', debugInfo);
+            console.log('Current URL:', window.location.href);
+            
+            if (!params.code && !params.access_token) {
+                const errorMsg = `Invalid or expired password reset link. Debug info - Code: ${params.code || 'missing'}, Access Token: ${params.access_token || 'missing'}, Type: ${params.type || 'missing'}. All params: ${debugInfo.join(', ')}`;
+                showError(errorMsg);
                 return;
             }
         });
